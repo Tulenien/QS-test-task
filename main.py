@@ -5,5 +5,4 @@ if __name__ == "__main__":
     towers = cityGrid.positionTowers(1, [], 0)
     print(*towers)
     cityGrid.print_pseudo()
-    cityGrid.resetGrid()
-    cityGrid.print_pseudo()
+    cityGrid.plot(towers)

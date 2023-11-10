@@ -3,9 +3,13 @@ from random import randint, shuffle
 import math
 import copy
 
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 class CityGrid:
     def __init__(self, rows, cols, obstructionPercentage):
-        if (rows < 1 or cols < 1):
+        if (rows < 1 or cols < 1 or 100 < obstructionPercentage < 0):
             raise ValueError
         self.grid = []
         for i in range(rows):
@@ -99,3 +103,34 @@ class CityGrid:
             for j in range(self.cols):
                 print(self.grid[i][j].value, end = " ")
         print("\n\n")
+
+    def plot(self, towers):
+        heatmap = np.arange(self.area).reshape(self.rows, self.cols)
+        for i in range(self.rows):
+            for j in range(self.cols):
+                value = self.grid[i][j]
+                if value == TileType.Obstruction:
+                    heatmap[i][j] = 0
+                elif value == TileType.Disconnected:
+                    heatmap[i][j] = 10
+                elif value == TileType.Tower:
+                    heatmap[i][j] = 20
+                elif value == TileType.Connected:
+                    heatmap[i][j] = 30
+        for tower in towers:
+            row, col, radius = tower
+            startRow = max(row - radius, 0)
+            startCol = max(col - radius, 0)
+            endRow = min(row + radius + 1, self.rows)
+            endCol = min(col + radius + 1, self.cols)
+            for i in range(startRow, endRow):
+                for j in range(startCol, endCol):
+                    if self.grid[i][j] == TileType.Connected:
+                        heatmap[i][j] += 5
+        annotLabels = np.empty_like(heatmap, dtype=str)
+        annotMaskTower = heatmap == 20
+        annotMaskDisconnected = heatmap == 10
+        annotLabels[annotMaskTower] = 'T'
+        annotLabels[annotMaskDisconnected] = 'D'
+        ax = sns.heatmap(heatmap, annot=annotLabels, fmt='', linewidth=0.5)
+        plt.show()
