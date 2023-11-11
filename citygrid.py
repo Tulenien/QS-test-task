@@ -7,6 +7,8 @@ import copy
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib.animation as animation
+from matplotlib.patheffects import withStroke
 
 class CityGrid:
     def __init__(self, rows, cols, obstructionPercentage):
@@ -153,7 +155,7 @@ class CityGrid:
                 print(self.grid[i][j].value, end = " ")
         print("\n\n")
 
-    def plot(self, towers):
+    def plot(self, towers, connectionPaths):
         obstructionColor = 0
         towerColor = 10
         connectedColor = 20
@@ -172,7 +174,7 @@ class CityGrid:
                     heatmap[i][j] = disconnectedColor
         delta = (disconnectedColor - connectedColor - 5) / len(towers)
         for tower in towers:
-            row, col, radius = tower
+            row, col, radius = tower.x, tower.y, tower.radius
             startRow = max(row - radius, 0)
             startCol = max(col - radius, 0)
             endRow = min(row + radius + 1, self.rows)
@@ -186,8 +188,21 @@ class CityGrid:
         annotMaskDisconnected = heatmap == disconnectedColor
         annotLabels[annotMaskTower] = 'T'
         annotLabels[annotMaskDisconnected] = 'D'
+        fig, ax = plt.subplots()
         ax = sns.heatmap(heatmap, annot=annotLabels, fmt='', linewidth=0.1)
         colorbar = ax.collections[0].colorbar
         colorbar.set_ticks([obstructionColor, towerColor, connectedColor, disconnectedColor])
         colorbar.set_ticklabels(["Obstruction", "(T)ower", "Connection", "(D)isconnected"])
+        lines = []
+        
+        def update(frame):
+            path = connectionPaths[frame]
+            pathX = [towers[i].x for i in path]
+            pathY = [towers[i].y for i in path]
+            lines.clear()
+            lines.append(ax.plot(np.array(pathY) + 0.5, np.array(pathX) + 0.5, lw=3, 
+            path_effects=[withStroke(linewidth=4, foreground='black')]))
+            return lines
+
+        anim = animation.FuncAnimation(fig, func=update, frames=len(connectionPaths), interval=1000)
         plt.show()
