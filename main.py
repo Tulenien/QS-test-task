@@ -3,8 +3,8 @@ from graph import *
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    cityGrid = CityGrid(10, 10, 30)
-    towers = cityGrid.positionTowers(1)
+    cityGrid = CityGrid(30, 40, 60)
+    towers = cityGrid.positionTowers(3)
     towers = cityGrid.mapTowerConnections(towers)
     connections = cityGrid.setOfConnections(towers)
 
