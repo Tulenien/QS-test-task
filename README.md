@@ -29,6 +29,26 @@ Animation example.
 
 ![Animation example](https://github.com/Tulenien/QS-test-task/blob/develop/pics/workExample.gif)
 
+Examples with various parameters:
+
+* M x N = 10 x 10
+* R = 1
+* Obstruction % = 30
+
+![](https://github.com/Tulenien/QS-test-task/blob/develop/pics/10_10_30_1.png)
+
+* M x N = 20 x 20
+* R = 2
+* Obstruction % = 40
+
+![](https://github.com/Tulenien/QS-test-task/blob/develop/pics/20_20_40_2.png)
+
+* M x N = 30 x 40
+* R = 4
+* Obstruction % = 40
+
+![](https://github.com/Tulenien/QS-test-task/blob/develop/pics/30_40_60_4.png)
+
 ## Todo
 Improve upon tower placement with new restrictions:
 - budget;
