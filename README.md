@@ -45,7 +45,7 @@ Examples with various parameters:
 
 * M x N = 30 x 40
 * R = 4
-* Obstruction % = 40
+* Obstruction % = 60
 
 ![](https://github.com/Tulenien/QS-test-task/blob/develop/pics/30_40_60_4.png)
 
